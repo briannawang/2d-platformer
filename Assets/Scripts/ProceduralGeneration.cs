@@ -16,6 +16,7 @@ public class ProceduralGeneration : MonoBehaviour
     private void Start()
     {
         int[,] map = GenerateArray(width, height, false);
+        map = CaveGeneration.TunnelCave(map, seed);
         map = CaveGeneration.RandomWalkCave(map, seed, requiredFloorPercent);
         RenderMap(map, tileMap, tile, width, height);
     }

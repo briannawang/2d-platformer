@@ -21,5 +21,4 @@ public static class Utils
     {
         return isFlip ? -1 : 1;
     }
-
 }

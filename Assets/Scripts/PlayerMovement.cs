@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rollModifierX = 1.2f;
     [SerializeField] private float rollModifierY = 0.8f;
 
-    private enum MovementState { idle, running, jumping, falling, wallgrab, rolling, airrolling }
+    private enum MovementState { idle, running, jumping, falling, wallgrab, rolling, airrolling, idlerolling, dashing }
 
     // Start is called before the first frame update
     private void Start()
@@ -165,6 +165,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canDash = false;
         isDash = true;
+        anim.SetInteger("state", (int)MovementState.dashing);
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(Utils.flipToInt(sprite.flipX) * dashVel, 0f);
         tr.emitting = true;
@@ -234,13 +235,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (isRoll)
         {
+            if (dirX > 0f || dirX < 0f)
+            {
+                state = MovementState.rolling;
+            } else
+            {
+                state = MovementState.idlerolling;
+            }
+
             if (rb.velocity.y > 0.1f || rb.velocity.y < -0.1f)
             {
                 state = MovementState.airrolling;
-            }
-            else
-            {
-                state = MovementState.rolling;
             }
         }
 
