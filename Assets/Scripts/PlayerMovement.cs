@@ -187,14 +187,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 moveVel *= rollModifierX;
                 jumpVel *= rollModifierY;
+                isRoll = true;
             }
-            else
-            {
-                moveVel /= rollModifierX;
-                jumpVel /= rollModifierY;
-                rb.velocity = new Vector2(rb.velocity.x, 6f); // TODO: this is hacky
+            else if (!Physics2D.OverlapCircle(Utils.ChangeY(coll.bounds.center, coll.bounds.size.y * 1.5f), checkRadius, groundLayer))
+            { // if has 1+ block space above, stop roll
+                {
+                    moveVel /= rollModifierX;
+                    jumpVel /= rollModifierY;
+                    rb.velocity = new Vector2(rb.velocity.x, 6f); // TODO: this is hacky
+                    isRoll = false;
+                }
             }
-            isRoll = !isRoll;
         }
     }
 

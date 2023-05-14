@@ -6,19 +6,32 @@ using UnityEngine.Tilemaps;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-    [SerializeField] int width;
-    [SerializeField] int height;
-    [SerializeField] TileBase tile;
+    [SerializeField] int width = 200;
+    [SerializeField] int height = 100;
+    [SerializeField] int itemCount = 7;
+    [SerializeField] GameObject item;
+    [SerializeField] Transform player;
+    [SerializeField] TileBase tile1;
+    [SerializeField] TileBase tile2;
+    [SerializeField] TileBase tile3;
+    [SerializeField] TileBase tile4;
+    [SerializeField] TileBase tile5;
+    [SerializeField] TileBase tile6;
+    [SerializeField] TileBase tile7;
+    [SerializeField] TileBase tile8;
+
     [SerializeField] Tilemap tileMap;
     [SerializeField] float seed;
     [SerializeField] int requiredFloorPercent;
 
     private void Start()
     {
+        TileBase[] tiles = new TileBase[] { tile1, tile2, tile3, tile4, tile5, tile6, tile7, tile8, tile8, tile8 };
         int[,] map = GenerateArray(width, height, false);
         map = CaveGeneration.TunnelCave(map, seed);
         map = CaveGeneration.RandomWalkCave(map, seed, requiredFloorPercent);
-        RenderMap(map, tileMap, tile, width, height);
+        ItemGenerator.RandomPlaceItems(map, seed, itemCount, item, player);
+        RenderMap(map, tileMap, tiles, width, height, seed);
     }
 
 
@@ -45,13 +58,14 @@ public class ProceduralGeneration : MonoBehaviour
         return map;
     }
 
-    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase tile, int width, int height)
+    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase[] tiles, int width, int height, float seed)
     {
-        int centerX = width / 2;
-        int centerY = height / 2;
+        //int centerX = width / 2;
+        //int centerY = height / 2;
 
         //Clear the map (ensures we dont overlap)
         tilemap.ClearAllTiles();
+        System.Random rand = new System.Random(seed.GetHashCode());
         //Loop through the width of the map
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
@@ -61,7 +75,7 @@ public class ProceduralGeneration : MonoBehaviour
                 // 1 = tile, 0 = no tile
                 if (map[x, y] == 1)
                 {
-                    tilemap.SetTile(new Vector3Int(x - centerX, y - centerY, 0), tile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), tiles[rand.Next(0, 10)]);
                 }
             }
         }
