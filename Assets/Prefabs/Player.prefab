@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7848489991005746938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.69, y: 0.893, z: 0}
+  m_LocalPosition: {x: 8.5, y: 6.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -161,6 +161,8 @@ MonoBehaviour:
   jumpVel: 17
   wallJumpVel: {x: 6, y: 14}
   dashVel: 34
+  rollModifierX: 1.2
+  rollModifierY: 0.8
 --- !u!114 &4817076341683760251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +284,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 97d52308-d76c-4e09-94ba-6af40f7ec1e3
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 618fc658-3ff8-4d9f-9a61-21f02f942c5e
+    m_ActionName: Player/Roll[/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

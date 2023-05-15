@@ -11,6 +11,7 @@ public class ProceduralGeneration : MonoBehaviour
     [SerializeField] int itemCount = 7;
     [SerializeField] GameObject item;
     [SerializeField] Transform player;
+    [SerializeField] Transform enemy;
     [SerializeField] TileBase tile1;
     [SerializeField] TileBase tile2;
     [SerializeField] TileBase tile3;
@@ -30,8 +31,8 @@ public class ProceduralGeneration : MonoBehaviour
         int[,] map = GenerateArray(width, height, false);
         map = CaveGeneration.TunnelCave(map, seed);
         map = CaveGeneration.RandomWalkCave(map, seed, requiredFloorPercent);
-        ItemGenerator.RandomPlaceItems(map, seed, itemCount, item, player);
-        RenderMap(map, tileMap, tiles, width, height, seed);
+        ItemGenerator.RandomPlaceItems(map, seed, itemCount, item, player, enemy);
+        RenderMap(map, tileMap, tiles, seed);
     }
 
 
@@ -58,11 +59,8 @@ public class ProceduralGeneration : MonoBehaviour
         return map;
     }
 
-    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase[] tiles, int width, int height, float seed)
+    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase[] tiles, float seed)
     {
-        //int centerX = width / 2;
-        //int centerY = height / 2;
-
         //Clear the map (ensures we dont overlap)
         tilemap.ClearAllTiles();
         System.Random rand = new System.Random(seed.GetHashCode());

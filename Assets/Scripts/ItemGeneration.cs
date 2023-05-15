@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
-    public static void RandomPlaceItems(int[,] map, float seed, int itemCount, GameObject item, Transform player)
+    public static void RandomPlaceItems(int[,] map, float seed, int itemCount, GameObject item, Transform player, Transform enemy)
     {
         //Seed our random
         System.Random rand = new System.Random(seed.GetHashCode());
@@ -20,7 +20,12 @@ public class ItemGenerator : MonoBehaviour
             itemY = rand.Next(1, map.GetUpperBound(1) - 1);
         }
 
-        player.position = new Vector3(itemX + 0.5f, itemY + 0.5f, 0f);
+        Debug.Log("player position was " + player.position);
+        Debug.Log("player position should be " + itemX + " and " + itemY);
+
+        player.position = new Vector3(itemX + 0.5f, itemY + 0.5f, 0f); // TODO: to use prefabs directly, may need: gameObject.transform.localPosition
+        Debug.Log("player position is " + player.position);
+        enemy.position = new Vector3(itemX + 1.5f, itemY + 1.5f, 0f);
 
         int items = 0;
 
