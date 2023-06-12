@@ -13,19 +13,22 @@ public class ItemGenerator : MonoBehaviour
         int itemY = rand.Next(1, map.GetUpperBound(1) - 1);
 
         // player should have a 2 x 2 space to spawn
-        while (map[itemX, itemY] != 0 || map[itemX + 1, itemY + 1] != 0 || map[itemX - 1, itemY + 1] != 0)
+        while (map[itemX, itemY] != -1 || map[itemX + 1, itemY + 1] == 1 || map[itemX - 1, itemY + 1] == 1)
         {
-            Debug.Log(itemX + " annd " + itemY);
             itemX = rand.Next(1, map.GetUpperBound(0) - 1);
             itemY = rand.Next(1, map.GetUpperBound(1) - 1);
         }
-
-        //Debug.Log("player position was " + player.position);
-        //Debug.Log("player position should be " + itemX + " and " + itemY);
-
         player.position = new Vector3(itemX + 0.5f, itemY + 0.5f, 0f); // TODO: to use prefabs directly, may need: gameObject.transform.localPosition
-        //Debug.Log("player position is " + player.position);
-        enemy.position = new Vector3(itemX + 1.5f, itemY + 1.5f, 0f);
+
+        // enemy should also have 2 x 2 place to spawn
+        itemX = rand.Next(1, map.GetUpperBound(0) - 1);
+        itemY = rand.Next(1, map.GetUpperBound(1) - 1);
+        while (map[itemX, itemY] != -1 || map[itemX + 1, itemY + 1] == 1 || map[itemX - 1, itemY + 1] == 1)
+        {
+            itemX = rand.Next(1, map.GetUpperBound(0) - 1);
+            itemY = rand.Next(1, map.GetUpperBound(1) - 1);
+        }
+        enemy.position = new Vector3(itemX + 0.5f, itemY + 0.5f, 0f);
 
         int items = 0;
 
@@ -35,7 +38,7 @@ public class ItemGenerator : MonoBehaviour
             itemY = rand.Next(1, map.GetUpperBound(1) - 1);
 
             // if tile is free to place item
-            if (map[itemX, itemY] == 0)
+            if (map[itemX, itemY] != 1)
             {
                 // generate item at tile location
                 Instantiate(item, new Vector3(itemX + 0.5f, itemY + 0.5f, 0f), Quaternion.identity);

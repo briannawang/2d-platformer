@@ -728,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5730935674783720419, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
       propertyPath: m_RootOrder
       value: 1

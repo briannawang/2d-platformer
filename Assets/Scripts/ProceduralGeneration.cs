@@ -33,12 +33,14 @@ public class ProceduralGeneration : MonoBehaviour
         int[,] map = GenerateArray(width, height, false);
         map = CaveGeneration.TunnelCave(map, seed);
         map = CaveGeneration.RandomWalkCave(map, seed, requiredFloorPercent);
+
+        TraversableMap(map);
         ItemGenerator.RandomPlaceItems(map, seed, itemCount, item, player, enemy);
         pathfinding = gameObject.GetComponent<Pathfinding>();
         pathfinding.PathfindingCtor(map);
         RenderMap(map, tileMap, tiles, seed);
+        //ConsolePrint(map);
     }
-
 
     // procedural generation code -----------------------------------------
 
@@ -92,9 +94,36 @@ public class ProceduralGeneration : MonoBehaviour
                 //We are only going to update the map, rather than rendering again
                 //This is because it uses less resources to update tiles to null
                 //As opposed to re-drawing every single tile (and collision data)
-                if (map[x, y] == 0)
+                if (map[x, y] != 1)
                 {
                     tilemap.SetTile(new Vector3Int(x, y, 0), null);
+                }
+            }
+        }
+    }
+
+    // traversable -----------------------------------------
+
+    public static void TraversableMap(int[,] map)
+    {
+        //Loop through the width of the map
+        for (int x = 0; x < map.GetUpperBound(0); x++)
+        {
+            //Loop through the height of the map
+            for (int y = 0; y < map.GetUpperBound(1); y++)
+            {
+                // 1 = tile, 0 = no tile
+                if (map[x, y] == 1)
+                {
+                    // TODO: should instead just set these when caves being generated
+                    if (y > 0 && map[x, y - 1] != 1) { map[x, y - 1] = -1; }
+                    if (y < map.GetUpperBound(1) - 1 && map[x, y + 1] != 1) { map[x, y + 1] = -1; }
+                    if (x > 0 && map[x - 1, y] != 1) { map[x - 1, y] = -1; }
+                    if (x < map.GetUpperBound(0) - 1 && map[x + 1, y] != 1) { map[x + 1, y] = -1; }
+
+                    // leave space for columns
+                    if (x > 1 && map[x - 2, y] == 0) { map[x - 2, y] = -2; }
+                    if (x < map.GetUpperBound(0) - 2 && map[x + 2, y] == 0) { map[x + 2, y] = -2; }
                 }
             }
         }
@@ -113,6 +142,14 @@ public class ProceduralGeneration : MonoBehaviour
                 if (map[x, y] == 0)
                 {
                     toPrint += "  ";
+                }
+                else if (map[x, y] == -1)
+                {
+                    toPrint += ". ";
+                }
+                else if (map[x, y] == -2)
+                {
+                    toPrint += "_ ";
                 }
                 else
                 {

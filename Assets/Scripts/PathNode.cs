@@ -7,11 +7,15 @@
     public int fCost;
 
     public PathNode prevNode;
+    public bool traversable;
+    public bool endable;
 
-    public PathNode(int x, int y)
+    public PathNode(int x, int y, bool traversable=true, bool endable=true)
     {
         this.x = x;
         this.y = y;
+        this.traversable = traversable;
+        this.endable = endable;
     }
 
     public PathNode(int x, int y, int gCost, PathNode prevNode)

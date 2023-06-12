@@ -14,7 +14,8 @@ public class EnemyMovement : MonoBehaviour
         enemyRb = GetComponent<Rigidbody2D>();
         pathfinding = GameObject.Find("ProceduralGeneration").GetComponent<Pathfinding>();
 
-        InvokeRepeating("EnemyPathfind", 5.0f, 1.5f);
+        // TODO: only pathfinding within a certain radius --> otherwise, 'patrol'(?) behaviour
+        InvokeRepeating("EnemyPathfind", 5.0f, 1.1f);
     }
 
     private void EnemyPathfind()
@@ -31,8 +32,8 @@ public class EnemyMovement : MonoBehaviour
     {
         foreach (PathNode n in moveList)
         {
-            yield return new WaitForSeconds(0.12f);
-            enemyRb.position = new Vector3(n.x, n.y + 1, 0f);
+            yield return new WaitForSeconds(0.09f);
+            enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.5f, 0f);
 
         }
     }

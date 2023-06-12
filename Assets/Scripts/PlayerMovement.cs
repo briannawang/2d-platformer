@@ -194,8 +194,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     moveVel /= rollModifierX;
                     jumpVel /= rollModifierY;
-                    rb.velocity = new Vector2(rb.velocity.x, 6f); // TODO: this is hacky
+                    rb.position = new Vector2(rb.position.x, rb.position.y + 0.5f);
+                    //rb.velocity = new Vector2(rb.velocity.x, 2f); // TODO: this is hacky
                     isRoll = false;
+                    UpdateAnimationState();
                 }
             }
         }
