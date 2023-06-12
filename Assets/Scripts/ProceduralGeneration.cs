@@ -25,6 +25,8 @@ public class ProceduralGeneration : MonoBehaviour
     [SerializeField] float seed;
     [SerializeField] int requiredFloorPercent;
 
+    Pathfinding pathfinding;
+
     private void Start()
     {
         TileBase[] tiles = new TileBase[] { tile1, tile2, tile3, tile4, tile5, tile6, tile7, tile8, tile8, tile8 };
@@ -32,6 +34,8 @@ public class ProceduralGeneration : MonoBehaviour
         map = CaveGeneration.TunnelCave(map, seed);
         map = CaveGeneration.RandomWalkCave(map, seed, requiredFloorPercent);
         ItemGenerator.RandomPlaceItems(map, seed, itemCount, item, player, enemy);
+        pathfinding = gameObject.GetComponent<Pathfinding>();
+        pathfinding.PathfindingCtor(map);
         RenderMap(map, tileMap, tiles, seed);
     }
 

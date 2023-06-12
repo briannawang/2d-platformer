@@ -20,11 +20,11 @@ public class ItemGenerator : MonoBehaviour
             itemY = rand.Next(1, map.GetUpperBound(1) - 1);
         }
 
-        Debug.Log("player position was " + player.position);
-        Debug.Log("player position should be " + itemX + " and " + itemY);
+        //Debug.Log("player position was " + player.position);
+        //Debug.Log("player position should be " + itemX + " and " + itemY);
 
         player.position = new Vector3(itemX + 0.5f, itemY + 0.5f, 0f); // TODO: to use prefabs directly, may need: gameObject.transform.localPosition
-        Debug.Log("player position is " + player.position);
+        //Debug.Log("player position is " + player.position);
         enemy.position = new Vector3(itemX + 1.5f, itemY + 1.5f, 0f);
 
         int items = 0;
