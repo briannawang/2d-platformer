@@ -21,4 +21,9 @@ public static class Utils
     {
         return isFlip ? -1 : 1;
     }
+
+    public static bool withinRange(Vector2 pos1, Vector2 pos2, int radius)
+    {
+        return Mathf.Abs(Vector2.Distance(pos1, pos2)) <= radius;
+    }
 }

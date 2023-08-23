@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,33 +9,71 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody2D enemyRb;
 
     Pathfinding pathfinding;
+    private bool chasing = false;
+    private bool chaseCalc = false;
 
     private void Start()
     {
         enemyRb = GetComponent<Rigidbody2D>();
         pathfinding = GameObject.Find("ProceduralGeneration").GetComponent<Pathfinding>();
-
-        // TODO: only pathfinding within a certain radius --> otherwise, 'patrol'(?) behaviour
-        InvokeRepeating("EnemyPathfind", 5.0f, 1.1f);
     }
 
-    private void EnemyPathfind()
+    private void Update()
     {
         Vector2 playerPos = playerRb.position;
         Vector2 enemyPos = enemyRb.position;
 
-        List<PathNode> moveList = pathfinding.FindPath(Mathf.FloorToInt(enemyPos.x), Mathf.FloorToInt(enemyPos.y), Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
+        // if not chasing, then start chase
+        if (Utils.withinRange(playerPos, enemyPos, 13))
+        {
+            if (!chasing)
+            {
+                InvokeRepeating("EnemyChase", 0.0f, 0.5f); // (method, time to start up, time to repeat)
+                chasing = true;
+            }
 
-        StartCoroutine(Chase(moveList));
+        }
+        // if currently chasing and gets out of range, stop chase
+        else
+        {
+            if (chasing)
+            {
+                CancelInvoke("EnemyChase");
+                chasing = false;
+            }
+            InvokeRepeating("EnemyWander", 0.0f, 3.5f); // (method, time to start up, time to repeat)
+        }
     }
 
-    private IEnumerator Chase(List<PathNode> moveList)
+    private void EnemyWander()
     {
-        foreach (PathNode n in moveList)
-        {
-            yield return new WaitForSeconds(0.09f);
-            enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.5f, 0f);
+        System.Random rand = new System.Random(0.GetHashCode());
+        int targX = rand.Next(0, 30) - 15;
+        int targY = rand.Next(0, 30) - 15;
+        Vector2 enemyPos = enemyRb.position;
+        List<PathNode> moveList = pathfinding.FindPath(Mathf.FloorToInt(enemyPos.x), Mathf.FloorToInt(enemyPos.y), Mathf.FloorToInt(enemyPos.x) + targX, Mathf.FloorToInt(enemyPos.y) + targY);
+        Pathfind(moveList);
+    }
 
+    private void EnemyChase()
+    {
+        Vector2 playerPos = playerRb.position;
+        Vector2 enemyPos = enemyRb.position;
+        List<PathNode> moveList = pathfinding.FindPath(Mathf.FloorToInt(enemyPos.x), Mathf.FloorToInt(enemyPos.y), Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
+        Pathfind(moveList);
+    }
+
+    async void Pathfind(List<PathNode> moveList)
+    {
+        if (!chaseCalc)
+        {
+            chaseCalc = true;
+            foreach (PathNode n in moveList)
+            {
+                await Task.Delay(130); // time between each movement
+                enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.5f, 0f);
+            }
+            chaseCalc = false;
         }
     }
 }

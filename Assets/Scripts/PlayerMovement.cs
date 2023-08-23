@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.performed && IsGrounded())
         {
-            if (!isRoll) // start roll
+            if (!isRoll && IsGrounded()) // start roll
             {
                 moveVel *= rollModifierX;
                 jumpVel *= rollModifierY;
