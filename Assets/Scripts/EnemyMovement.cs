@@ -72,7 +72,7 @@ public class EnemyMovement : MonoBehaviour
             {
                 if (interruptible && chasing) break; // interrupt if chase starts
                 await Task.Delay(speed); // time between each movement
-                enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.5f, 0f);
+                enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.9f, 0f);
             }
             chaseCalc = false;
         }

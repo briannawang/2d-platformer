@@ -728,9 +728,41 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760249, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2efea0f20a4274014ac7d17fcc1ba6ef, type: 2}
+    - target: {fileID: 4817076341683760253, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1097212026, guid: 5b371d58392cb48c59894d0b7ed44d40, type: 3}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Size.x
+      value: 0.71302414
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Size.y
+      value: 1.7482833
+      objectReference: {fileID: 0}
     - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.03013134
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0023847222
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.7777778
+      objectReference: {fileID: 0}
+    - target: {fileID: 4817076341683760255, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.7777778
       objectReference: {fileID: 0}
     - target: {fileID: 5730935674783720419, guid: de6976f4044994e0f9e9d7d5246c6033, type: 3}
       propertyPath: m_RootOrder
