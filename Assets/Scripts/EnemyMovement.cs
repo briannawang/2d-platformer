@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +10,13 @@ public class EnemyMovement : MonoBehaviour
     Pathfinding pathfinding;
     private bool chasing = false;
     private bool chaseCalc = false;
+    System.Random rand;
 
     private void Start()
     {
         enemyRb = GetComponent<Rigidbody2D>();
         pathfinding = GameObject.Find("ProceduralGeneration").GetComponent<Pathfinding>();
+        rand = new System.Random(0.GetHashCode());
     }
 
     private void Update()
@@ -24,14 +25,14 @@ public class EnemyMovement : MonoBehaviour
         Vector2 enemyPos = enemyRb.position;
 
         // if not chasing, then start chase
-        if (Utils.withinRange(playerPos, enemyPos, 13))
+        if (Utils.withinRange(playerPos, enemyPos, 8))
         {
+            CancelInvoke("EnemyWander");
             if (!chasing)
             {
-                InvokeRepeating("EnemyChase", 0.0f, 0.5f); // (method, time to start up, time to repeat)
                 chasing = true;
+                InvokeRepeating("EnemyChase", 0.0f, 0.5f); // (method, time to start up, time to repeat)
             }
-
         }
         // if currently chasing and gets out of range, stop chase
         else
@@ -47,12 +48,11 @@ public class EnemyMovement : MonoBehaviour
 
     private void EnemyWander()
     {
-        System.Random rand = new System.Random(0.GetHashCode());
-        int targX = rand.Next(0, 30) - 15;
-        int targY = rand.Next(0, 30) - 15;
+        int targX = rand.Next(-10, 11);
+        int targY = rand.Next(-10, 11);
         Vector2 enemyPos = enemyRb.position;
         List<PathNode> moveList = pathfinding.FindPath(Mathf.FloorToInt(enemyPos.x), Mathf.FloorToInt(enemyPos.y), Mathf.FloorToInt(enemyPos.x) + targX, Mathf.FloorToInt(enemyPos.y) + targY);
-        Pathfind(moveList);
+        Pathfind(moveList, 400, true);
     }
 
     private void EnemyChase()
@@ -60,17 +60,18 @@ public class EnemyMovement : MonoBehaviour
         Vector2 playerPos = playerRb.position;
         Vector2 enemyPos = enemyRb.position;
         List<PathNode> moveList = pathfinding.FindPath(Mathf.FloorToInt(enemyPos.x), Mathf.FloorToInt(enemyPos.y), Mathf.FloorToInt(playerPos.x), Mathf.FloorToInt(playerPos.y));
-        Pathfind(moveList);
+        Pathfind(moveList, 140, false);
     }
 
-    async void Pathfind(List<PathNode> moveList)
+    async void Pathfind(List<PathNode> moveList, int speed, bool interruptible)
     {
         if (!chaseCalc)
         {
             chaseCalc = true;
             foreach (PathNode n in moveList)
             {
-                await Task.Delay(130); // time between each movement
+                if (interruptible && chasing) break; // interrupt if chase starts
+                await Task.Delay(speed); // time between each movement
                 enemyRb.position = new Vector3(n.x + 0.5f, n.y + 0.5f, 0f);
             }
             chaseCalc = false;
